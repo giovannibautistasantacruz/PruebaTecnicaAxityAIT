@@ -4,21 +4,42 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApiExamen.Models.CustomModels;
 
 namespace WebApiExamen.Controllers
 {
     public class ValuesController : ApiController
     {
+        private Models.ExamAxityEntities context = new Models.ExamAxityEntities();
         // GET api/values
-        public IEnumerable<string> Get()
+        public IHttpActionResult Getproducts()
         {
-            return new string[] { "value1", "value2" };
+            var products = context.Products.ToList();
+
+            return Json(products);
         }
 
         // GET api/values/5
-        public string Get(int id)
+        public IHttpActionResult GetLogin(string user,string password)
         {
-            return "value";
+            try
+            {
+                var userData = context.Users.Where(s => s.pwd == password && s.user == user).FirstOrDefault();
+                LoginResponse logn = new LoginResponse();
+                logn.status = true;
+                logn.user = userData;
+                return Json(logn);
+            }
+            catch (Exception)
+            {
+                LoginResponse logn = new LoginResponse
+                {
+                    status = false
+                };
+                return Json(logn);
+            }
+            // var userData = context.Users.Select(s => s.pwd == password && s.user == user).FirstOrDefault();
+            
         }
 
         // POST api/values
