@@ -1,7 +1,48 @@
 ﻿@{
-    ViewBag.Title = "About";
-}
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+}
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">SKU</th>
+            <th scope="col">Description</th>
+        </tr>
+    </thead>
+    <tbody id="contntTable">
+        
+        
+    </tbody>
+</table>
+
+
+<script>
+
+    PRODUCTS();
+
+    const PRODUCTS = () => {
+        
+
+        fetch(`http://localhost:26746/api/Values`, {headers:{'Access-Control-Allow-Origin':'*'}})
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+
+                let arreglo = [];
+                arreglo = myJson;
+
+                arreglo.forEach(element => {
+
+                    document.getElementById("contntTable").innerHTML = `<tr><td> ${myJson.id}</td> <td>${myJson.name}} </td> <td>${myJson.sku} </td> <td>${myJson.description} </td></tr>`
+
+                });
+
+                
+
+            });
+    }
+
+</script>
